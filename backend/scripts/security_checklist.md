@@ -1,0 +1,20 @@
+# Security Review
+- [ ] Long random JWT secret
+- [ ] Password hashes only
+- [ ] RBAC on protected operations
+- [ ] Upload size and extension validation
+- [ ] Random server-side filenames
+- [ ] Uploads outside public/static directories
+- [ ] Attachments never executed
+- [ ] Email HTML treated as untrusted
+- [ ] No arbitrary URL requests
+- [ ] Private/reserved IPs blocked from public GeoIP
+- [ ] Provider timeouts/failure handling
+- [ ] No secrets or full email bodies in logs
+- [ ] DEBUG=false in production
+- [ ] HTTPS enabled
+- [ ] Exact CORS origins
+- [ ] Backups configured
+- [ ] Dependency/security scanning
+- [ ] Rate limiting
+- [ ] Monitoring/alerting

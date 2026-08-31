@@ -1,0 +1,19 @@
+From: Security <security@example.invalid>
+To: analyst@example.net
+Reply-To: attacker@example.invalid
+Subject: Urgent account verification
+Date: Mon, 31 Aug 2026 11:00:00 +0000
+Message-ID: <phish-001@example.invalid>
+Received: from suspicious.example.invalid (198.51.100.20) by mx.example.net; Mon, 31 Aug 2026 11:00:00 +0000
+Authentication-Results: mx.example.net; spf=fail
+Content-Type: multipart/alternative; boundary=x
+
+--x
+Content-Type: text/plain; charset=utf-8
+
+Verify your account now: https://secure-login.example.invalid/verify
+--x
+Content-Type: text/html; charset=utf-8
+
+<a href="https://secure-login.example.invalid/verify">Verify</a>
+--x--
