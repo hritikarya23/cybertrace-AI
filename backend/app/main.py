@@ -53,5 +53,19 @@ app.include_router(reports_router)
 
 
 @app.get("/api/v1/health", tags=["Health"])
-async def health() -> dict[str, str]:
-    return {"status": "healthy", "version": "1.0.0"}
+async def health() -> dict[str, str | bool]:
+    return {
+        "success": True,
+        "status": "healthy",
+        "version": app.version,
+        "app_name": settings.app_name,
+    }
+
+
+@app.get("/", tags=["Health"])
+async def root() -> dict[str, str | bool]:
+    return {
+        "success": True,
+        "app_name": settings.app_name,
+        "docs": app.docs_url or "/docs",
+    }

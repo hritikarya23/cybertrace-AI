@@ -180,7 +180,7 @@ class IPAddress(Base):
     email: Mapped[Email] = relationship(back_populates="ip_addresses")
 
 
-class Analysis(Base):
+class Analysis(TimestampMixin, Base):
     __tablename__ = "analyses"
     __table_args__ = (
         Index("ix_analyses_email_created", "email_id", "created_at"),
