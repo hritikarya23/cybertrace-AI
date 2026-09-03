@@ -98,28 +98,10 @@ async def _external(text_subject: str, text_body: str) -> AIResult:
         return AIResult("unknown", 0.0, 0.0, status="unavailable", reason=f"External AI unavailable: {type(exc).__name__}")
 
 
-def _mock(subject: str, body: str) -> AIResult:
-    # Deterministic demo-only output. It is explicitly marked mock and is never presented as real intelligence.
-    text = f"{subject}\n{body}".lower()
-    indicators: list[AIIndicator] = []
-    if any(word in text for word in ("urgent", "immediately", "act now")):
-        indicators.append(AIIndicator("urgency", "Urgency-oriented language detected"))
-    if any(word in text for word in ("password", "credential", "verify your account", "login")):
-        indicators.append(AIIndicator("credential_request", "Possible credential verification request"))
-    if any(word in text for word in ("gift card", "wire transfer", "bank account")):
-        indicators.append(AIIndicator("financial_request", "Possible financial request detected"))
-    probability = min(0.95, 0.20 + 0.25 * len(indicators))
-    classification = "phishing" if probability >= 0.7 else "suspicious" if probability >= 0.45 else "legitimate"
-    return AIResult(classification, probability, probability, indicators, "completed", "mock", True)
-
-
 async def analyze_text(subject: str | None, body: str | None) -> AIResult:
     """Run configured AI analysis; never fabricate results when a real provider is unavailable."""
     subject = subject or ""
     body = body or ""
-    if os.getenv("MOCK_EXTERNAL_SERVICES", "false").strip().lower() in {"1", "true", "yes", "on"}:
-        return _mock(subject, body)
-
     local_path = os.getenv("AI_LOCAL_MODEL_PATH", "").strip()
     if local_path:
         try:

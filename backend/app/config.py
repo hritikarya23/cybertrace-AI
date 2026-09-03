@@ -2,6 +2,13 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+
+# Load the backend-local development configuration for both Uvicorn and Alembic.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 
 def _bool(name: str, default: bool = False) -> bool:

@@ -12,7 +12,7 @@ pytest==8.3.3
 #      requirements.txt file's history is easy to follow phase by phase) ----
  sqlalchemy==2.0.35          # Phase 2 - database
  alembic==1.13.2             # Phase 2 - migrations
- psycopg[binary]==3.2.1      # Phase 2 - PostgreSQL driver
+ psycopg[binary]>=3.2.10,<3.4 # Phase 2 - PostgreSQL driver
  python-jose[cryptography]==3.3.0   # Phase 3 - JWT
  passlib[bcrypt]==1.7.4      # Phase 3 - password hashing
  python-multipart==0.0.9     # Phase 4 - file uploads (.eml)

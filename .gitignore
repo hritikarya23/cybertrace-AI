@@ -1,0 +1,16 @@
+# Environment files are intentionally tracked in this private repository.
+# Docker build context exclusions
+.git
+**/node_modules
+**/.venv
+**/.venv*/
+**/__pycache__/
+**/.pytest_cache/
+**/dist/
+**/build/
+
+# Runtime data is kept outside the Docker build context.
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/reports/*
+!backend/reports/.gitkeep

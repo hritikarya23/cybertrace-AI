@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,7 +10,7 @@ from app.config import settings
 from app.core.security import create_access_token, hash_password, verify_password
 from app.database.database import get_db
 from app.database.models import User
-from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserResponse
+from app.schemas.auth import ChangePasswordRequest, LoginRequest, RegisterRequest, TokenResponse, UserResponse
 
 router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
 
@@ -57,3 +57,19 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)) -> To
 @router.get("/me", response_model=UserResponse)
 async def me(user: User = Depends(get_current_user)) -> UserResponse:
     return _response(user)
+
+
+@router.post("/change-password", status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
+async def change_password(
+    payload: ChangePasswordRequest,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> Response:
+    """Change the authenticated user's password; clients must sign in again afterwards."""
+    if not verify_password(payload.current_password, user.password_hash):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Current password is incorrect")
+    if payload.current_password == payload.new_password:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="New password must be different")
+    user.password_hash = hash_password(payload.new_password)
+    await db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
